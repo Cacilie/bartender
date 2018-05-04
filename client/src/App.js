@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import feathers from './feathers-client';
 
 class App extends Component {
+
+
   render() {
     return (
       <div className="App">
