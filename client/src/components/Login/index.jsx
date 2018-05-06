@@ -46,7 +46,7 @@ const sectionStyles = {
     backgroundSize: "cover",
     zIndex: "0",
     width: "100%",
-    height: 1000, 
+    height: 880, 
     overflow: 'hidden'
 }
 
