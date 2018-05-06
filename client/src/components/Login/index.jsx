@@ -19,6 +19,11 @@ class Login extends Component {
         password: md5(this.state.password)
       }
     }).then( res => {
+      if(res.token !== 0){
+        console.log("Se asignará token")
+        window.localStorage.setItem('token', res.token)
+        window.location = "/adddrink";
+      }
       console.log(res)
     })
   }

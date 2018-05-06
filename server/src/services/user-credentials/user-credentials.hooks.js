@@ -21,8 +21,9 @@ module.exports = {
         context.result.token = 0
         return context
       }
+      let date =  new Date();
       let token = jwt.sign({
-        userid: context.result.data[0].id
+        userid: context.result.data[0].id,
       }, '2H8mO]Lk,MrF7w{')
       delete context.result.data[0].password
       context.result.token = token
