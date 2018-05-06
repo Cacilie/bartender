@@ -1,9 +1,12 @@
-
+var jwt = require('jsonwebtoken');
+var jconfig = require('../../JwtConfig');
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [context => {
+      return context;
+    }],
     get: [],
     create: [],
     update: [],
@@ -13,7 +16,19 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [context => {
+      if(context.result.total == 0){
+        context.result.token = 0
+        return context
+      }
+      let token = jwt.sign({
+        userid: context.result.data[0].id
+      }, '2H8mO]Lk,MrF7w{')
+      delete context.result.data[0].password
+      context.result.token = token
+      return context
+
+    }],
     get: [],
     create: [],
     update: [],
