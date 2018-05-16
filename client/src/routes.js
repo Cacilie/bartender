@@ -20,7 +20,7 @@ const AppRoutes = () =>
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
       <Route path="/adddrink" component={AddDrink} />
-      <Route path="/orderdrink" component={OrderDrink} />
+      <Route path="/orderdrink/:id" component={OrderDrink} />
     </Switch>
   </App>
 
