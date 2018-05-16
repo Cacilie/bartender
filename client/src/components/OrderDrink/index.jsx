@@ -7,7 +7,7 @@ import feathers from '../../feathers-client';
 import Config from '../../Config/config'
 
 
-const format = 'h:mm a';
+const format = ' HH:mm:ss';
 const now = moment().hour(0).minute(0);
 
 const formStyle = {
@@ -22,7 +22,7 @@ class OrderDrink extends Component {
       ordered: 0,
       delivered: 0,
       name: '',
-      arravingtime: moment().format('LTS'),
+      arravingtime: moment().format('HH:mm:ss'),
       quantity: 1
     },
     loading: false,
@@ -56,8 +56,20 @@ class OrderDrink extends Component {
     await this.setState({
       newOrder: {
         ...this.state.newOrder,
-        ordered: moment().format(),
+        ordered: moment().format('YYYY-MM-DD HH:mm:ss'),
         delivered: null,
+      }
+    })
+
+    await feathers.service('orders').create(this.state.newOrder)
+    await this.setState({
+      newOrder : {
+        drink_id: this.props.match.params.id,
+        ordered: 0,
+        delivered: 0,
+        name: '',
+        arravingtime: moment().format(' HH:mm:ss'),
+        quantity: 1
       }
     })
     console.log(this.state.newOrder)
@@ -135,7 +147,7 @@ class OrderDrink extends Component {
                   className="xxx"
                   onChange={this._handleTimeChange}
                   format={format}
-                  use12Hours
+
                   inputReadOnly
                 />
             </Form.Field>
