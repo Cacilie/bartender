@@ -8,6 +8,6 @@
   },
   "mysql": {
     "client": "mysql2",
-    "connection": "mysql://root:root@localhost:3306/bartender"
+    "connection": "mysql://root:pedropool13@localhost:3306/bartender"
   }
 }
