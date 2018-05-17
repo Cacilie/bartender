@@ -11,6 +11,8 @@ import AddDrink from './components/AddDrink';
 import Drinks from './components/Drinks'
 
 
+import OrderDrink from  './components/OrderDrink';
+import ViewOrders from './components/ViewOrders';
 
 
 
@@ -23,6 +25,8 @@ const AppRoutes = () =>
       <Route path="/adddrink" component={AddDrink} />
       <Route path="/drinks" component={Drinks} />
 
+      <Route path="/orderdrink/:id" component={OrderDrink} />
+      <Route path="/vieworders" component={ViewOrders} />
     </Switch>
   </App>
 
