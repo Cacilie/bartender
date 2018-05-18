@@ -1,4 +1,13 @@
+const {populate} = require('feathers-hooks-common');
 
+const findSchema = {
+  include: [{
+    service: 'drinks',
+    nameAs: 'drinkInfo',
+    parentField: 'drink_id',
+    childField: 'id'
+  }]
+}
 
 module.exports = {
   before: {
@@ -13,7 +22,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [populate({schema: findSchema})],
     get: [],
     create: [],
     update: [],

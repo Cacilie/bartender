@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import feathers from '../../feathers-client';
 import Config from '../../Config/config'
-import {Segment, Button, Table, Icon} from 'semantic-ui-react'
+import {Segment, Button, Table, Icon, Modal, Header, Image} from 'semantic-ui-react'
 import moment from 'moment'
 
 
@@ -12,7 +12,15 @@ class ViewOrders extends Component{
     orders : [],
     page  : 0,
     noItems : 10,
-    total: 0
+    total: 0,
+    open: false,
+    infoToShow : {
+      drinkInfo:{
+        name: '',
+        instructions: '',
+        file: ''
+      }
+    }
   }
 
 
@@ -24,7 +32,10 @@ class ViewOrders extends Component{
   fetchData  = () =>{
     feathers.service('orders').find({
       query : {
-        $skip: this.state.noItems * this.state.page
+        $skip: this.state.noItems * this.state.page,
+        delivered: {
+          $lt:  1
+        }
       }
     }).then(res => {
       console.log(res)
@@ -35,12 +46,29 @@ class ViewOrders extends Component{
     })
   }
 
+  _handleOpenModal = (drink) => {
+    console.log(drink)
+    this.setState({
+      open: true,
+      infoToShow: drink
+    })
+  }
+
+  _handleFinishDrink = async (drink) => {
+    console.log(drink)
+    await feathers.service('orders').patch(drink.id, {
+      delivered: moment().format('YYYY-MM-DD HH:mm:ss')
+    })
+    this.fetchData()
+  }
+
+
   renderTableBody = () => {
     return this.state.orders.map( (v, i) => {
       return(
         <Table.Row key={i}>
           <Table.Cell >{v.id}</Table.Cell>
-          <Table.Cell >{v.drink_id}</Table.Cell>
+          <Table.Cell >{v.drinkInfo.name}</Table.Cell>
           <Table.Cell >{moment(v.ordered).format()}</Table.Cell>
           <Table.Cell >{v.quantity}</Table.Cell>
           <Table.Cell >{v.name}</Table.Cell>
@@ -52,13 +80,13 @@ class ViewOrders extends Component{
                   <Icon name="trash" />
                 </Button.Content>
               </Button>
-              <Button animated  color="green" inverted>
+              <Button animated  color="green" inverted onClick={() => this._handleFinishDrink(v)}>
                 <Button.Content visible> Terminar </Button.Content>
                 <Button.Content hidden>
                   <Icon name="send" />
                 </Button.Content>
               </Button>
-              <Button animated  color="blue" inverted>
+              <Button animated  color="blue" inverted onClick={() => this._handleOpenModal(v)}>
                 <Button.Content visible> Ver </Button.Content>
                 <Button.Content hidden>
                   <Icon name="search" />
@@ -75,6 +103,27 @@ class ViewOrders extends Component{
   render(){
     return(
       <div>
+        <Modal open={this.state.open} basic size='small'>
+          <Header icon='info' content='Instrucciones' />
+          <Modal.Content>
+            <h3>{this.state.infoToShow.drinkInfo.name}</h3>
+            <pre>
+              {this.state.infoToShow.drinkInfo.instructions}
+            </pre>
+            <Image src={Config.apiUrl + this.state.infoToShow.drinkInfo.file}  size="medium"/>
+
+          </Modal.Content>
+          <Modal.Actions>
+            <Button basic color='red' inverted onClick={() => {
+              this.setState({
+                open: false
+              })
+            }}>
+              <Icon name='remove' /> Cerrar
+            </Button>
+
+          </Modal.Actions>
+        </Modal>
         <Segment style={{
           display: "flex"
         }}>
