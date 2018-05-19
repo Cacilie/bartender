@@ -33,9 +33,7 @@ class ViewOrders extends Component{
     feathers.service('orders').find({
       query : {
         $skip: this.state.noItems * this.state.page,
-        delivered: {
-          $lt:  1
-        }
+        delivered: 'null'
       }
     }).then(res => {
       console.log(res)
@@ -62,6 +60,12 @@ class ViewOrders extends Component{
     this.fetchData()
   }
 
+  _handleCancelDrink = async (drink) => {
+    console.log(drink)
+    await feathers.service('orders').remove(drink.id)
+    this.fetchData()
+  }
+
 
   renderTableBody = () => {
     return this.state.orders.map( (v, i) => {
@@ -74,7 +78,7 @@ class ViewOrders extends Component{
           <Table.Cell >{v.name}</Table.Cell>
           <Table.Cell>
             <Button.Group>
-              <Button animated  color="red" inverted>
+              <Button animated  color="red" inverted onClick={() => this._handleCancelDrink(v)}>
                 <Button.Content visible> Cancelar </Button.Content>
                 <Button.Content hidden>
                   <Icon name="trash" />

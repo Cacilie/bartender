@@ -12,7 +12,13 @@ const findSchema = {
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [context => {
+      if(context.params.query.delivered === 'null'){
+        console.log('si entro')
+        context.params.query.delivered = null;
+      }
+      return context
+    }],
     get: [],
     create: [],
     update: [],
