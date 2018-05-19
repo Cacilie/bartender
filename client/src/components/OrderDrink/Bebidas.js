@@ -25,22 +25,29 @@ class Bebidas extends Component {
       titleToOpen : '',
       imageToOpen : '',
       instructionsToOpen : '',
+      drinkToOrder : {}
     }
   }
 
-  openModal = (name, file, instructions) => {
+  _handleOrderButton = () => {
+    window.location = "/orderdrink/" + this.state.drinkToOrder.id
+  }
+
+  openModal = (bebida, name, file, instructions) => {
+    console.log(bebida)
     this.setState({
       titleToOpen: name,
       modalIsOpen: true,
       imageToOpen: file,
-      instructionsToOpen: instructions
+      instructionsToOpen: instructions,
+      drinkToOrder: bebida
     });
   }
 
   closeModal = () => {
     this.setState({modalIsOpen: false});
   }
-  
+
 	render() {
     let bebidas;
     if(this.props.bebidas){
@@ -54,7 +61,7 @@ class Bebidas extends Component {
               </Card.Header>
             </Card.Content>
             <Card.Content extra>
-              <Button onClick={() => this.openModal(bebida.name, bebida.file, bebida.instructions)}>Ordenar</Button>
+              <Button onClick={() => this.openModal(bebida, bebida.name, bebida.file, bebida.instructions)}>Ordenar</Button>
             </Card.Content>
           </Card>
         );
@@ -80,7 +87,7 @@ class Bebidas extends Component {
             </Card.Content>
           </Card>
 
-          <button onClick={this.closeModal} style={{margin: "2em", float: "left"}}>Ordenar</button>
+          <button onClick={this._handleOrderButton} style={{margin: "2em", float: "left"}}>Ordenar</button>
           <button onClick={this.closeModal} style={{margin: "2em", float: "right"}}>Cerrar</button>
         </Modal>
 
