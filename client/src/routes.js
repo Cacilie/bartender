@@ -7,6 +7,8 @@ import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
 import Login from './components/Login';
+import Register from './components/Register';
+
 import AddDrink from './components/AddDrink';
 import Drinks from './components/Drinks'
 
@@ -27,6 +29,7 @@ const AppRoutes = () =>
       <Route path="/orderdrinks" component={DrinksToOrder} />
       <Route path="/orderdrink/:id" component={OrderDrink} />
       <Route path="/vieworders" component={ViewOrders} />
+      <Route path="/register" component={Register} />
     </Switch>
   </App>
 
