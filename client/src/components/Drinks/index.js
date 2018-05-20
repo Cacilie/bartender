@@ -6,7 +6,15 @@ import Bebidas  from './Bebidas';
 class Drinks extends Component {
 	
 	state = {
-		drinks: [],
+    drinks: [],
+    open: false,
+    infoToShow : {
+      drinkInfo:{
+        name: '',
+        instructions: '',
+        file: ''
+      }
+    }
 	}
 
 	componentDidMount() {
